@@ -39,7 +39,7 @@ export default function Upload() {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/split", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || ""}/api/split`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ receipt_base64: base64, description: description.trim() }),
