@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
@@ -79,22 +79,23 @@ export default function Upload() {
         {error && <div className="error">{error}</div>}
       </div>
 
-      <details className="raw">
-        <summary>Use the API directly instead</summary>
-        <div className="card" style={{ marginTop: 10 }}>
-          <p>
-            <code>POST /api/split</code> with header <code>Content-Type: application/json</code> and this body:
-          </p>
-          <pre className="raw-json">{`{
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+        <details className="raw" style={{ flex: 1, marginTop: 0 }}>
+          <summary>Use the API directly instead</summary>
+          <div className="card" style={{ marginTop: 10 }}>
+            <p>
+              <code>POST /api/split</code> with header <code>Content-Type: application/json</code> and this body:
+            </p>
+            <pre className="raw-json">{`{
   "receipt_base64": "<base64-encoded image bytes, no data-URI prefix>",
   "description": "<the plain-English string>"
 }`}</pre>
-          <p>Example with curl (reads an image file, base64-encodes it, and posts it):</p>
-          <pre className="raw-json">{`curl -X POST http://localhost:8787/api/split \\
+            <p>Example with curl (reads an image file, base64-encodes it, and posts it):</p>
+            <pre className="raw-json">{`curl -X POST http://localhost:8787/api/split \\
   -H "Content-Type: application/json" \\
   -d "{\\"receipt_base64\\": \\"$(base64 -w0 receipt.jpg)\\", \\"description\\": \\"Priya and I shared the pasta. Priya paid.\\"}"`}</pre>
-          <p>The response is always this shape, whether the split succeeded or something needed to be flagged:</p>
-          <pre className="raw-json">{`{
+            <p>The response is always this shape, whether the split succeeded or something needed to be flagged:</p>
+            <pre className="raw-json">{`{
   "per_person": [{"name": "...", "items": [...], "subtotal": 0,
     "tax_share": 0, "service_share": 0, "discount_share": 0, "total": 0}],
   "grand_total": 0,
@@ -104,8 +105,12 @@ export default function Upload() {
   "assumptions": ["..."],
   "flags": ["..."]
 }`}</pre>
-        </div>
-      </details>
+          </div>
+        </details>
+        <Link to="/tools/base64" style={{ fontSize: 13, whiteSpace: "nowrap", marginTop: 4 }}>
+          Image → base64 tool
+        </Link>
+      </div>
     </div>
   );
 }
